@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Small Business Chatbot</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="chatbox">
+    <h2>Welcome! Chat with us</h2>
+    <div id="chat">
+        <p><b>Bot:</b> Hello! I’m here to help you. Ask me anything about the business or services.</p>
+    </div>
+
+    <input id="msg" placeholder="Type your message..." />
+    <button onclick="send()">Send</button>
+
+    <p style="font-size:12px;color:gray;">
+        *Your contact info will only be used for follow-up or appointments.
+    </p>
+</div>
+
+<script>
+function send(){
+    let msg = document.getElementById("msg").value;
+
+    if(msg.trim() === "") return;
+
+    document.getElementById("chat").innerHTML += 
+        "<p><b>You:</b> " + msg + "</p>";
+
+    fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: msg})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("chat").innerHTML += 
+            "<p><b>Bot:</b> " + data.reply + "</p>";
+        document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+    });
+
+    document.getElementById("msg").value = "";
+}
+</script>
+
+</body>
+</html>
