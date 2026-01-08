@@ -51,7 +51,6 @@ def chat():
     return jsonify({"reply": bot_reply})
 
 
-
 Greeting:
 {config['greeting']}
 
