@@ -100,7 +100,7 @@ Goals:
         ]
     )
 
-    bot_reply = response.output_text
+    bot_reply = response.output[0].content[0].text
 
     # Lead capture
     email = re.search(r'[\w\.-]+@[\w\.-]+', user_message)
@@ -111,8 +111,12 @@ Goals:
 
     return jsonify({"reply": bot_reply})
 
+init_client_config()
 # ---------- START ----------
 if __name__ == "__main__":
-    init_client_config()
+    
+    
+
     port = int(os.environ.get("PORT", 5000))
-    app.run(hos
+    app.run(host="0.0.0.0", port=port)
+
