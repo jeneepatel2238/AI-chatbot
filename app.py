@@ -38,13 +38,19 @@ def home():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    user_message = request.json.get("message")
-    print("USER:", user_message)
+    data = request.get_json()
+    user_message = data.get("message")
 
-    config = get_client_config()
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=user_message
+    )
 
-    system_prompt = f"""
-You are a friendly AI chatbot for {config['business_name']}.
+    bot_reply = response.output[0].content[0].text
+
+    return jsonify({"reply": bot_reply})
+
+
 
 Greeting:
 {config['greeting']}
